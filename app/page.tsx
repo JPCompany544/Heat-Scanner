@@ -1,65 +1,132 @@
-import Image from "next/image";
+// app/page.tsx
+import React from 'react';
+import Heatscanner from '../components/Heatscanner';
+import HottestWallets from '../components/HottestWallets';
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="container">
+      <header className="header">
+        <h1 className="h1">Heat Scanner</h1>
+        <div className="subtext">See how high-earning wallets move, grow, and behave.</div>
+        <div className="micro">VaultFi extracts behaviour patterns — not just numbers.</div>
+      </header>
+
+      <React.Suspense fallback={<div className="text-center py-20 opacity-50">Loading scanner...</div>}>
+        <Heatscanner />
+      </React.Suspense>
+
+      <section className="props-grid" aria-label="Value propositions">
+        <div className="prop">
+          <div className="icon">
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <circle cx="6" cy="8" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
+              <circle cx="12" cy="5" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
+              <circle cx="18" cy="9" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
+              <circle cx="8" cy="16" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
+              <circle cx="16" cy="17" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
+              <path
+                d="M7.3 8.7L10.7 6.3M13.1 5.7L16.8 7.8M6.7 9.6L7.4 14.4M12 6.7L15 15.2M9.2 16L14.6 16.6"
+                stroke="#06D6A0"
+                strokeWidth="1.1"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+          <div className="title">Behaviour Intelligence</div>
+          <div className="copy">We track movement, not noise.</div>
+        </div>
+
+        <div className="prop">
+          <div className="icon">
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <rect
+                x="4.25"
+                y="5.25"
+                width="6.5"
+                height="13.5"
+                rx="2.5"
+                stroke="#06D6A0"
+                strokeWidth="1.1"
+              />
+              <rect
+                x="13.25"
+                y="5.25"
+                width="6.5"
+                height="13.5"
+                rx="2.5"
+                stroke="#06D6A0"
+                strokeWidth="1.1"
+              />
+              <path
+                d="M7.5 9.2L7.5 14.8M16.5 9.2L16.5 14.8"
+                stroke="#06D6A0"
+                strokeWidth="1.1"
+                strokeLinecap="round"
+              />
+              <path
+                d="M9.2 8L11 6.2M15 6.2L16.8 8M9.2 16L11 17.8M15 17.8L16.8 16"
+                stroke="#06D6A0"
+                strokeWidth="1.1"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+          <div className="title">Mirror-Ready Patterns</div>
+          <div className="copy">Extract scalable signals instantly.</div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="prop">
+          <div className="icon">
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.5 3L7 13.2H11.6L10.8 21L17 10.4H12.6L12.5 3Z"
+                stroke="#06D6A0"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <div className="title">Instant Activation</div>
+          <div className="copy">One scan unlocks the path forward.</div>
         </div>
-      </main>
+      </section>
+
+      <section className="social">
+        <h3>Recent Signals</h3>
+        <div className="stats">
+          <div>Top Wallet ROI (24h): <strong>+143%</strong></div>
+          <div>Signals Generated: <strong>382</strong></div>
+          <div>Tracked Chains: <strong>4</strong></div>
+        </div>
+      </section>
+
+      <HottestWallets />
+
+      <footer className="footer" role="contentinfo">
+        <a href="#">What is VaultFi?</a>
+        <a href="#">How it works</a>
+        <a href="#">Security</a>
+      </footer>
     </div>
   );
 }
