@@ -65,7 +65,7 @@ export default function VaultBridgePage() {
               disabled={isNavigating}
               className="btn-pulse inline-flex w-full items-center justify-center rounded-xl bg-[#FFD166] px-8 py-4 text-sm font-semibold uppercase tracking-[0.25em] text-black shadow-[0_18px_55px_rgba(0,0,0,0.85)] transition-transform transition-shadow duration-200 hover:-translate-y-0.5 hover:shadow-[0_26px_80px_rgba(0,0,0,0.95)] md:text-base disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {isNavigating ? 'Redirecting...' : 'Create Vault'}
+              {isNavigating ? '...' : 'Create Vault'}
             </button>
             <p className="mt-2 text-center text-xs text-[#B0B0B0] md:text-sm">
               You can fund your vault after creation.
