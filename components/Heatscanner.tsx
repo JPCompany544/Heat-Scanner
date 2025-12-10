@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { getWalletTier, isScanEligible } from '@/utils/tierEngine';
+import { useRouter } from 'next/navigation';
+import { getWalletTier } from '@/utils/tierEngine';
 import { getTierTemplate } from '@/utils/tierTemplates';
-import { fetchWalletUSD } from '@/utils/fetchWalletUSD';
+import { fetchWalletUSD as fetchBalance } from '@/utils/fetchWalletUSD';
 
 type Chain =
   | 'ethereum'
@@ -33,19 +33,6 @@ export default function HeatScanner() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Auto-scan if scanAddress is present in URL (e.g. from HottestWallets)
-  useEffect(() => {
-    const scanAddr = searchParams.get('scanAddress');
-    if (scanAddr) {
-      scanWallet(scanAddr);
-      // Remove the param so we don't re-scan on refresh
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('scanAddress');
-      router.replace(`/?${params.toString()}`, { scroll: false });
-    }
-  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // Quick auto-chain detection heuristic by format
@@ -97,30 +84,27 @@ export default function HeatScanner() {
     scanWallet();
   };
 
-  const scanWallet = async (addressOverride?: string) => {
-    const target = typeof addressOverride === 'string' ? addressOverride : wallet;
-    const trimmed = target.trim();
-
-    // If overriding, update the local state to reflect it in the UI
-    if (addressOverride && addressOverride !== wallet) {
-      setWallet(addressOverride);
-    }
-
+  const scanWallet = async () => {
+    const trimmed = wallet.trim();
     if (!trimmed) {
       return;
     }
 
     setLoading(true);
     try {
-      // 1. Fetch USD balance using automatic wallet scanner
-      const balanceUSD = await fetchWalletUSD(trimmed);
+      // 1. Fetch USD balance using existing balance fetcher
+      const balanceUSD = await fetchBalance(trimmed);
 
       // 2. Determine tier
       const tier = getWalletTier(balanceUSD);
 
-      // 3. Reject Tier0 with inline message and no navigation
-      if (!isScanEligible(tier)) {
-        setError('Signal too weak. Vault mirrors only trigger at $10K+ balances.');
+      // 3. Low balance routing (<$100) -> page2
+      if (balanceUSD < 100) {
+        const params = new URLSearchParams({
+          address: trimmed,
+          balance: balanceUSD.toString(),
+        });
+        router.push(`/results/low?${params.toString()}`);
         return;
       }
 
@@ -136,9 +120,9 @@ export default function HeatScanner() {
         template: template ? JSON.stringify(template) : '',
       });
       router.push(`/results?${params.toString()}`);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error scanning wallet:', error);
-      setError(error.message || 'Network request failed. Please check your connection and try again.');
+      setError('Failed to scan wallet. Please try again.');
     } finally {
       setLoading(false);
     }
