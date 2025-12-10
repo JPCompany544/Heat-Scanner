@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-export default function ResultsPageLowBalance() {
+function ResultsPageLowBalanceContent() {
     const searchParams = useSearchParams();
     const address = searchParams.get('address') || 'Wallet #22164';
     const balance = searchParams.get('balance');
@@ -218,5 +218,20 @@ export default function ResultsPageLowBalance() {
                 </section>
             </div>
         </div>
+    );
+}
+
+export default function ResultsPageLowBalance() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#0c0c0f] text-white py-12 px-4 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FFD166] mx-auto"></div>
+                    <p className="mt-4 text-[var(--muted)]">Loading results...</p>
+                </div>
+            </div>
+        }>
+            <ResultsPageLowBalanceContent />
+        </Suspense>
     );
 }
