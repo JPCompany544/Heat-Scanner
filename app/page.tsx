@@ -1,131 +1,90 @@
-// app/page.tsx
 import React from 'react';
 import Heatscanner from '../components/Heatscanner';
-import HottestWallets from '../components/HottestWallets';
+import LiveSignalsFeed from '../components/LiveSignalsFeed';
 
 export default function HomePage() {
   return (
     <div className="container">
+      {/* Institutional System Status Bar */}
+      <div className="system-status-bar font-mono">
+        <div className="status-indicator">
+          <span className="pulse-dot" />
+          <span>HEAT v2.8 // OPERATIONAL</span>
+        </div>
+        <div className="hidden sm:flex gap-6">
+          <span>SOLANA RPC: ACTIVE</span>
+          <span>EVM ENDPOINT: ACTIVE</span>
+          <span>UTC: {new Date().toISOString().substring(11, 19)}</span>
+        </div>
+      </div>
+
+      {/* Terminal Title / Brand Header */}
       <header className="header">
-        <h1 className="h1">Heat Scanner</h1>
-        <div className="subtext">See how high-earning wallets move, grow, and behave.</div>
-        <div className="micro">VaultFi extracts behaviour patterns — not just numbers.</div>
+        <h1 className="h1">HEAT</h1>
+        <div className="subtext">Behavioral intelligence for on-chain capital.</div>
+        <div className="micro">Analyze wallet behavior, map capital movement, and identify high-performing execution patterns.</div>
       </header>
 
-      <React.Suspense fallback={<div className="text-center py-20 opacity-50">Loading scanner...</div>}>
-        <Heatscanner />
-      </React.Suspense>
+      {/* Wallet Analysis Console */}
+      <Heatscanner />
 
-      <section className="props-grid" aria-label="Value propositions">
+      {/* Live Intelligence Feed & Tracked Wallets */}
+      <LiveSignalsFeed />
+
+      {/* Operational Value Props Grid */}
+      <section className="props-grid" aria-label="Platform capabilities">
         <div className="prop">
           <div className="icon">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="6" cy="8" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
-              <circle cx="12" cy="5" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
-              <circle cx="18" cy="9" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
-              <circle cx="8" cy="16" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
-              <circle cx="16" cy="17" r="1.4" stroke="#06D6A0" strokeWidth="1.2" />
-              <path
-                d="M7.3 8.7L10.7 6.3M13.1 5.7L16.8 7.8M6.7 9.6L7.4 14.4M12 6.7L15 15.2M9.2 16L14.6 16.6"
-                stroke="#06D6A0"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-              />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4H20V8H4V4Z" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 10H20V14H4V10Z" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 16H20V20H4V16Z" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <div className="title">Behaviour Intelligence</div>
-          <div className="copy">We track movement, not noise.</div>
+          <div className="title">Capital Movement Tracking</div>
+          <div className="copy">
+            Monitor capital rotations across EVM chains, stablecoin positions, and active liquidity pools in real time.
+          </div>
         </div>
 
         <div className="prop">
           <div className="icon">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="4.25"
-                y="5.25"
-                width="6.5"
-                height="13.5"
-                rx="2.5"
-                stroke="#06D6A0"
-                strokeWidth="1.1"
-              />
-              <rect
-                x="13.25"
-                y="5.25"
-                width="6.5"
-                height="13.5"
-                rx="2.5"
-                stroke="#06D6A0"
-                strokeWidth="1.1"
-              />
-              <path
-                d="M7.5 9.2L7.5 14.8M16.5 9.2L16.5 14.8"
-                stroke="#06D6A0"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-              />
-              <path
-                d="M9.2 8L11 6.2M15 6.2L16.8 8M9.2 16L11 17.8M15 17.8L16.8 16"
-                stroke="#06D6A0"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-              />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M2 17L12 22L22 17" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M2 12L12 17L22 12" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <div className="title">Mirror-Ready Patterns</div>
-          <div className="copy">Extract scalable signals instantly.</div>
+          <div className="title">Accumulation Signature Analysis</div>
+          <div className="copy">
+            Identify structured positioning cycles, buy-side momentum, and capital concentration before pricing moves occur.
+          </div>
         </div>
 
         <div className="prop">
           <div className="icon">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.5 3L7 13.2H11.6L10.8 21L17 10.4H12.6L12.5 3Z"
-                stroke="#06D6A0"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 3H6C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3Z" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M12 8V16" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8 12H16" stroke="#00E676" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <div className="title">Instant Activation</div>
-          <div className="copy">One scan unlocks the path forward.</div>
+          <div className="title">Execution Pattern Matching</div>
+          <div className="copy">
+            Generate behavioral parameters aligned with identified execution patterns for strategy vault deployment.
+          </div>
         </div>
       </section>
 
-      <section className="social">
-        <h3>Recent Signals</h3>
-        <div className="stats">
-          <div>Top Wallet ROI (24h): <strong>+143%</strong></div>
-          <div>Signals Generated: <strong>382</strong></div>
-          <div>Tracked Chains: <strong>4</strong></div>
+      {/* Terminal Footer */}
+      <footer className="footer font-mono" role="contentinfo">
+        <div>HEAT // BEHAVIORAL INTELLIGENCE</div>
+        <div className="flex gap-4">
+          <a href="/legal/security">SECURITY</a>
+          <a href="/legal/risk">RISK DISCLOSURE</a>
+          <a href="/legal/terms">TERMS</a>
+          <a href="/legal/privacy">PRIVACY</a>
         </div>
-      </section>
-
-      <HottestWallets />
-
-      <footer className="footer" role="contentinfo">
-        <a href="#">What is VaultFi?</a>
-        <a href="#">How it works</a>
-        <a href="#">Security</a>
       </footer>
     </div>
   );

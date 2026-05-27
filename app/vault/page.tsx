@@ -1,87 +1,116 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-export default function VaultBridgePage() {
-  const [isNavigating, setIsNavigating] = useState(false);
+function VaultBridgeContent() {
+  const searchParams = useSearchParams();
+  const rawAddress = searchParams.get('address') || '0xUNKNOWN_ADDRESS';
+  const isLowBalance = searchParams.get('low_balance') === 'true';
+
+  const [deployStep, setDeployStep] = useState(0);
+  const [isDeploying, setIsDeploying] = useState(false);
+
+  const displayAddress = rawAddress.length > 20
+    ? `${rawAddress.slice(0, 8)}...${rawAddress.slice(-8)}`
+    : rawAddress;
 
   const handleCreateVault = () => {
-    setIsNavigating(true);
-    // Add a smooth transition before navigating
+    setIsDeploying(true);
+    setDeployStep(1);
+
     setTimeout(() => {
-      window.location.href = 'https://vault-fi-3y63.vercel.app/vault-init';
-    }, 300);
+      setDeployStep(2);
+      setTimeout(() => {
+        setDeployStep(3);
+        setTimeout(() => {
+          window.location.href = 'https://vault-fi-3y63.vercel.app/app/vaults/solis-yield-vault';
+        }, 800);
+      }, 800);
+    }, 700);
   };
 
   return (
-    <div className="min-h-screen bg-[#0F1115] text-white px-4 py-10">
-      <div className="mx-auto w-full max-w-xl">
-        <section className="vault-bridge rounded-2xl border border-white/5 bg-[#1F2128] px-6 py-8 shadow-[0_18px_50px_rgba(0,0,0,0.7)]">
-          <header className="text-center">
-            <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-emerald-400/40 bg-emerald-500/10 text-emerald-300">
-              <svg
-                aria-hidden="true"
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="4.25"
-                  y="6.25"
-                  width="15.5"
-                  height="11.5"
-                  rx="2.25"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <circle cx="9" cy="12" r="1.25" fill="currentColor" />
-                <path
-                  d="M13 11.25H16.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M6.5 18.25H17.5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
+    <div className="container py-12 max-w-xl font-mono text-xs">
+      {/* HUD Header */}
+      <div className="system-status-bar mb-6">
+        <div>VAULT SETUP // STRATEGY ACTIVATION</div>
+        <div>WALLET: {displayAddress}</div>
+      </div>
+
+      <div className="terminal-window">
+        <header className="report-title-block border-none pb-0 mb-6">
+          <h1 className="h1 text-white text-xl">Activate Strategy Vault</h1>
+          <p className="subtext text-white/70 mt-1">
+            Set up a dedicated execution environment aligned with the identified behavioral profile.
+          </p>
+          <div className="micro text-[var(--accent)] mt-3">SYSTEM PROTOCOL: VAULTFI GATEWAY v1.4</div>
+        </header>
+
+        {isDeploying ? (
+          <div className="bg-[#050608] border border-white/5 p-6 rounded space-y-4 font-mono text-xs">
+            <div className="text-[var(--amber)] animate-pulse">INITIALIZING STRATEGY VAULT...</div>
+            <div className="space-y-2 mt-2">
+              <div className={deployStep >= 1 ? 'text-[var(--accent)]' : 'text-white/30'}>
+                {deployStep >= 1 ? '[✓]' : '[ ]'} [1/3] Preparing vault configuration...
+              </div>
+              <div className={deployStep >= 2 ? 'text-[var(--accent)]' : 'text-white/30'}>
+                {deployStep >= 2 ? '[✓]' : '[ ]'} [2/3] Verifying strategy parameters...
+              </div>
+              <div className={deployStep >= 3 ? 'text-[var(--accent)]' : 'text-white/30'}>
+                {deployStep >= 3 ? '[✓]' : '[ ]'} [3/3] Activating vault interface...
+              </div>
             </div>
-            <h1 className="text-2xl md:text-3xl lg:text-[32px] font-bold tracking-tight text-[#F5F5F5]">
-              We've extracted this wallet's earning behaviour.
-            </h1>
-            <p className="mt-3 text-sm md:text-base lg:text-[18px] leading-relaxed text-[#B0B0B0]">
-              To activate mirroring, you need a VaultFi vault.
-            </p>
-          </header>
-
-          <div className="mt-8">
-            <button
-              type="button"
-              onClick={handleCreateVault}
-              disabled={isNavigating}
-              className="btn-pulse inline-flex w-full items-center justify-center rounded-xl bg-[#FFD166] px-8 py-4 text-sm font-semibold uppercase tracking-[0.25em] text-black shadow-[0_18px_55px_rgba(0,0,0,0.85)] transition-transform transition-shadow duration-200 hover:-translate-y-0.5 hover:shadow-[0_26px_80px_rgba(0,0,0,0.95)] md:text-base disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {isNavigating ? '...' : 'Create Vault'}
-            </button>
-            <p className="mt-2 text-center text-xs text-[#B0B0B0] md:text-sm">
-              You can fund your vault after creation.
-            </p>
+            <div className="visual-pulse-grid mt-4" style={{ height: '30px' }} />
           </div>
+        ) : (
+          <div className="space-y-6">
+            <div className="bg-[#050608] border border-white/5 p-4 rounded text-white/70 space-y-3 leading-relaxed">
+              <div className="font-semibold text-white/90">TRANSITION OVERVIEW:</div>
+              <div>
+                Manual replication of this behavioral signature carries elevated execution risk.
+                A Strategy Vault provides a dedicated environment that aligns capital allocation
+                with the identified rotation patterns and execution windows.
+              </div>
+              {isLowBalance && (
+                <div className="text-[var(--amber)] border-t border-white/5 pt-2 mt-2">
+                  * Minimum capital threshold ($100 USD) required to activate full strategy tracking.
+                </div>
+              )}
+            </div>
 
-          <div className="mt-8 flex flex-col items-center gap-1 text-xs text-[var(--muted)] md:flex-row md:justify-center md:gap-4">
-            <a href="#" className="hover:text-white/90 transition-colors">
-              How VaultFi vaults work
-            </a>
-            <a href="#" className="hover:text-white/90 transition-colors">
-              Security & Privacy
-            </a>
+            <div className="border-t border-white/5 pt-4">
+              <button
+                type="button"
+                onClick={handleCreateVault}
+                className="btn-terminal btn-terminal-amber w-full text-center font-semibold cursor-pointer"
+              >
+                Activate Strategy Vault
+              </button>
+              <p className="mt-3 text-[10px] text-white/30 text-center">
+                Vault activation requires wallet confirmation.
+              </p>
+            </div>
           </div>
-        </section>
+        )}
+
+        <div className="mt-8 pt-4 border-t border-white/5 flex justify-between text-white/40">
+          <a href="/legal/security" className="hover:text-white transition-colors">SECURITY OVERVIEW</a>
+          <a href="/legal/terms" className="hover:text-white transition-colors">TERMS OF USE</a>
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function VaultBridgePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#07080a] text-white/40 flex flex-col justify-center items-center font-mono text-xs">
+        <div className="animate-pulse">Loading vault interface...</div>
+      </div>
+    }>
+      <VaultBridgeContent />
+    </Suspense>
   );
 }
